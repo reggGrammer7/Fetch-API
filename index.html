@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch API Sandbox</title>
+
+    <style>
+        
+
+
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h1 class = display-4 mb-4> Fetch API Sandbox</h1>
+        
+        <div class="d-flex">
+                <button class = "btn btn-primary mr-4 " id="getText">Get Text</button>
+    
+    <div id="output"></div>
+    <button class = "btn btn-success mr-4id="getUsers">Get Users</button>
+    
+    <!-- <div id="users"></div> -->
+
+    <button class = "btn btn-warning mr-4 id="getPosts">Get Posts</button>
+
+
+        </div>
+
+    <form  id="addPost">
+        <div class ="form-group">
+            <input type="text" class="form-control" id ="title" placeholder="Title">
+        </div>
+        <div class ="form-group">
+            <textarea id="body" class=" "form control placeholder="Body"></textarea>
+        </div>
+        <input type="submit" class = "btn btn-secondary" value ="Submit">
+    </form>
+     </div>
+
+
+
+
+    <script>
+        document.getElementById('getText').addEventListener('click',getText);
+        document.getElementById('getUsers').addEventListener('click',getUsers);
+        document.getElementById('getPosts').addEventListener('click',getPosts);
+        document.getElementById('addPost').addEventListener('submit',addPost);
+
+        // function getText(){
+        //     // making an api call to file instead of xmlhttprequest
+        //     fetch('sample.txt')
+        //     .then(function(res){
+        //         return res.text();
+        //     })
+        //     .then(function(data){
+        //         console.log(data);
+        //     });
+        // }
+        // using arrow functions instead 
+        function getText(){
+            // making an api call to file instead of xmlhttprequest
+            fetch('sample.txt')
+            .then((res) => res.text())
+            .then((data) => {
+                // inserting results into the DOM
+                document.getElementById('output').innerHTML=data;
+            })
+            .catch((err) => console.log(err))
+        }
+
+
+        // GET USERS 
+        function getUsers(){
+            // making an api call to file instead of xmlhttprequest
+            fetch('users.json')
+            .then((res) => res.json())
+            .then((data) => {
+                // inserting results into the DOM
+                let output = '<h2 class="mb-4">Users</h2>'
+                data.forEach((user) => {
+                    output += `
+                    <ul class = "list-group mb-3">
+                    <ul>
+                        <li class = "list-group-item">ID:${user.id}</li>
+                        <li class = "list-group-item">Name:${user.name}</li>
+                        <li class = "list-group-item">Email:${user.email}</li>
+                        
+                        
+                    </ul>
+                    
+                    
+                    `;
+
+                })
+                document.getElementById('users').innerHTML=output;
+            })
+            .catch((err) => console.log(err))
+        }
+
+        // Fetching data from JSON placeholder api
+        //   function getPosts(){
+        //     // making an api call to file instead of xmlhttprequest
+        //     fetch('https://jsonplaceholder.typicode.com/posts')
+        //     .then((res) => res.json())
+        //     .then((data) => {
+        //         // inserting results into the DOM
+        //         let output = '<h2>Posts</h2>'
+        //         data.forEach((user) => {
+        //             output += `
+        //             <ul>
+        //                 <li>ID:${user.id}</li>
+        //                 <li>Title:${user.title}</li>
+        //                 <li>Body:${user.body}</li>
+               
+                        
+                        
+        //             </ul>
+                    
+                    
+        //             `;
+
+        //         })
+        //         document.getElementById('users').innerHTML=output;
+        //     })
+        //     .catch((err) => console.log(err))
+        // }
+          function getPosts(){
+            // making an api call to file instead of xmlhttprequest
+            fetch('https://jsonplaceholder.typicode.com/posts')
+            .then((res) => res.json())
+            .then((data) => {
+                // inserting results into the DOM
+                let output = '<h2 class="mb-4">Posts</h2>'
+                data.forEach((post) => {
+                    output += `
+                    <div class = "card card-body mb-3"
+                    <div>
+                        <h2> ${post.title}</h2>
+                        <p>${post.title}</p>
+                        
+                        
+                    </div>
+                    
+                    
+                    `;
+
+                })
+                document.getElementById('users').innerHTML=output;
+            })
+            .catch((err) => console.log(err))
+        }
+
+
+        function addPost(e){
+            e.preventDefault();
+            let title = document.getElementById('title').value;
+            let body = document.getElementById('body').value;
+
+
+            fetch('https://jsonplaceholder.typicode.com/posts', {
+                method : 'POST',
+                headers : {
+                    'Accept':'application/json, text/plain, */*',
+                    'Content-type':'application/json'
+                },
+                body:JSON.stringify({title:title, body:body})
+            })
+            .then((res) => res.json())
+            .then((data)=> console.log(data))
+        }
+    </script>
+</body>
+</html>
